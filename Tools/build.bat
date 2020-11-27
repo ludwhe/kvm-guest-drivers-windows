@@ -38,7 +38,8 @@ set BUILD_ARCH=
 set BUILD_FAILED=
 
 set VSFLAVOR=Professional
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.com" set VSFLAVOR=Community
+if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\devenv.com" set VSFLAVOR=Community
+if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\devenv.com" set VSFLAVOR=Enterprise
 echo USING !VSFLAVOR! Visual Studio
 
 rem Parse arguments
@@ -173,7 +174,7 @@ if /I "!TAG!"=="SDV" (
   call :runsdv "%TARGET_PROJ_CONFIG% %BUILD_FLAVOR%" %BUILD_ARCH%
 ) else (
   echo Building %BUILD_FILE%, configuration %TARGET_VS_CONFIG%, command %BUILD_COMMAND%
-  call "C:\Program Files (x86)\Microsoft Visual Studio\2017\!VSFLAVOR!\Common7\IDE\devenv.com" %BUILD_FILE% %BUILD_COMMAND% %TARGET_VS_CONFIG% /Out %BUILD_LOG_FILE%
+  call "C:\Program Files (x86)\Microsoft Visual Studio\2019\!VSFLAVOR!\Common7\IDE\devenv.com" %BUILD_FILE% %BUILD_COMMAND% %TARGET_VS_CONFIG% /Out %BUILD_LOG_FILE%
 )
 popd
 endlocal

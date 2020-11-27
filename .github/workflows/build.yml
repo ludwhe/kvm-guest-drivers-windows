@@ -1,0 +1,38 @@
+name: Build release
+
+on:
+  release:
+  push:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: $HOME\AppData\Local\Temp\chocolatey
+          key: choco-cache-${{ hashFiles('**/dependencies.config') }}
+          restore-keys: |
+            choco-cache-
+      - name: Install dependencies
+        # specify cpdk version pending approval
+        run: |
+          choco install -y cpdk --version 8.0
+          choco install -y windows-sdk-8.1
+          choco install -y winfsp
+      - name: Build drivers
+        run: ./buildAll.bat Win10
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: kvm-guest-drivers-windows
+          path: |
+            ./**/Install
+            ./LICENSE
+            ./*/LICENSE
+            !./Tools/LICENSE
+            ./README.md
